@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+    <title>Preview Payment Import</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+<div class="page-content page-content--form">
+    <div class="hero page-hero hero-small hero-has-back">
+        <div class="container">
+            <a href="#" class="btn btn--secondary" onclick="history.back(); return false;">←</a>
+            <h1 class="page-title">Preview Payment Import</h1>
+        </div>
+    </div>
+
+    <p>
+        <strong th:text="${okCount}"></strong> ready to import,
+        <strong th:text="${duplicateCount}"></strong> already exist (will be skipped),
+        <strong th:text="${errorCount}"></strong> could not be read (will be skipped).
+        <span th:if="${mode == 'paid'}">All imported payments will be marked as <strong>Paid</strong>, using the sheet's date as the actual payment date.</span>
+        <span th:if="${mode == 'unpaid'}">All imported payments will be marked as <strong>Unpaid</strong>, with the due date rounded to the 1st of that month.</span>
+    </p>
+
+    <table class="results-table">
+        <thead>
+        <tr>
+            <th>Row</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Project ID</th>
+            <th>Project Name</th>
+            <th>Bank Details</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="row : ${rows}">
+            <td th:text="${row.rowNumber}"></td>
+            <td th:text="${row.status}"
+                th:style="${row.status == 'OK'} ? 'color: green;' : (${row.status == 'DUPLICATE'} ? 'color: darkorange;' : 'color: red;')"></td>
+            <td th:text="${row.date != null ? #dates.format(row.date, 'dd/MM/yyyy') : '-'}"></td>
+            <td th:text="${row.amount != null ? '£' + #numbers.formatDecimal(row.amount, 0, 'COMMA', 2, 'POINT') : '-'}"></td>
+            <td th:text="${row.projectId != null ? row.projectId : row.rawProjectId}"></td>
+            <td th:text="${row.projectName != null ? row.projectName : '-'}"></td>
+            <td th:text="${row.matchedBankDetailLabel != null ? row.matchedBankDetailLabel : 'unlinked'}"></td>
+            <td th:text="${row.message}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/upcoming-payments/upload/confirm}" method="post" style="margin-top:20px;">
+        <button type="submit" class="btn btn--primary" th:disabled="${okCount == 0}">
+            Confirm Import (<span th:text="${okCount}"></span> payment(s))
+        </button>
+        <a th:href="@{/upcoming-payments/upload}" class="btn btn--secondary">Cancel</a>
+    </form>
+</div>
+</div>
+</body>
+</html>

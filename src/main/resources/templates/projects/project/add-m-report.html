@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/main.css"/>
+	<link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+	<title>Add Monitoring Report</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+		<div class="page-content page-content--form">
+			<div class="hero page-hero hero-small hero-has-back">
+				<div class="container">
+					<a href="#" class="btn btn--secondary" onclick="history.back(); return false;">←</a>
+					<h1 class="page-title">Add Monitoring Report</h1>
+				</div>
+			</div>
+			<div class="container container--small contact-us clearfix">
+			<div class="page-content page-content--form">
+			<div class="g_browser_chrome gform_wrapper gform_legacy_markup_wapper gform-theme--no-framework">
+				<form th:action="@{/projects/{id}/add-monitoring-report(id=${project.id})}"
+					  th:object="${monitoringReportForm}" method="post">
+					<div class="gform-body gform_body">
+						<ul id="gform_fields_2" class="gform_fields top_label form_sublabel_below description_below">
+							<li id="field_2_1"
+								class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="report-due-date">Date Due:<span
+									class="gfield_required"><span
+									class="gfield_required gfield_required_asterisk">*</span></span></label>
+								<div class="ginput_container ginput_container_text">
+									<input id="report-due-date" type="date" th:field="*{reportDueDate}" class="large"
+										   aria-required="true" aria-invalid="false">
+								</div>
+								<div th:if="${#fields.hasErrors('reportDueDate')}" th:errors="*{reportDueDate}" class="gfield_error"></div>
+							</li>
+							<li id="field_2_2"
+								class="gfield gfield--type-email gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="report-received-date">Date Received:</label>
+								<div class="ginput_container ginput_container_email">
+									<input id="report-received-date" type="date" th:field="*{reportReceivedDate}" class="large">
+								</div>
+								<div th:if="${#fields.hasErrors('reportReceivedDate')}" th:errors="*{reportReceivedDate}" class="gfield_error"></div>
+							</li>
+							<li id="field_2_3"
+								class="gfield gfield--type-email gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_3"><label class="gfield_label gform-field-label" for="report-approved-date">Date Approved:</label>
+								<div class="ginput_container ginput_container_email">
+									<input id="report-approved-date" type="date" th:field="*{reportApprovedDate}" class="large">
+								</div>
+								<div th:if="${#fields.hasErrors('reportApprovedDate')}" th:errors="*{reportApprovedDate}" class="gfield_error"></div>
+							</li>
+							<li id="field_2_4"
+								class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_4"><label class="gfield_label gform-field-label" for="report-link">Report Link:</label>
+								<div class="ginput_container ginput_container_text">
+									<input id="report-link" type="text" th:field="*{reportLink}" class="large"/>
+								</div>
+								<div th:if="${#fields.hasErrors('reportLink')}" th:errors="*{reportLink}" class="gfield_error"></div>
+							</li>
+						</ul>
+					</div>
+					<div class="gform_footer top_label">
+						<button type="submit" class="gform_button button btn btn--primary">Add Report</button>
+					</div>
+				</form>
+			</div>
+		</div>
+			</div>
+	</div>
+</div>
+
+</body>
+</html>

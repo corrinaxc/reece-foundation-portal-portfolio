@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+    <title>Upload Payments</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+        <div class="page-content page-content--form">
+            <div class="hero page-hero hero-small hero-has-back">
+                <div class="container">
+                    <a href="#" class="btn btn--secondary" onclick="history.back(); return false;">←</a>
+                    <h1 class="page-title">Upload Payments</h1>
+                </div>
+            </div>
+            <div class="container container--small contact-us clearfix">
+            <div class="page-content page-content--form">
+
+            <p>Upload an Excel (.xlsx) file of payments. The sheet must have a header row including
+                at minimum <strong>Date</strong>, <strong>Amount</strong> and a project id column
+                (either <strong>Project ID</strong> or <strong>ID</strong>).
+                Optional columns <strong>Account name</strong>, <strong>Account no</strong>, <strong>Sort Code</strong>,
+                <strong>Bank details confirmed</strong> and <strong>Invoice</strong> will also be used if present.</p>
+
+            <p>You'll see a preview of what will be imported before anything is saved.</p>
+
+            <div th:if="${error}" class="gfield_error" th:text="${error}"></div>
+
+            <div class="g_browser_chrome gform_wrapper gform_legacy_markup_wapper gform-theme--no-framework">
+                <form th:action="@{/upcoming-payments/upload/preview}" method="post" enctype="multipart/form-data">
+                    <div class="gform-body gform_body">
+                        <ul class="gform_fields top_label form_sublabel_below description_below">
+                            <li class="gfield gfield--type-fileupload gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible">
+                                <label class="gfield_label gform-field-label" for="file">Payments File (.xlsx):</label>
+                                <div class="ginput_container">
+                                    <input type="file" id="file" name="file" accept=".xlsx" class="large" required />
+                                </div>
+                            </li>
+                            <li class="gfield gfield--type-select gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible">
+                                <label class="gfield_label gform-field-label" for="mode">What kind of payments are these?</label>
+                                <div class="ginput_container ginput_container_select">
+                                    <select id="mode" name="mode" class="large new-application-select" required>
+                                        <option value="" selected disabled>-- Select --</option>
+                                        <option value="paid">Legacy payments already sent - mark as Paid, using each row's date as the actual payment date</option>
+                                        <option value="unpaid">Future / upcoming payments - mark as Unpaid, with the due date rounded to the 1st of that month</option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="gform_footer top_label">
+                        <button type="submit" class="gform_button button btn btn--primary">Preview Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+            </div>
+    </div>
+</div>
+</body>
+</html>

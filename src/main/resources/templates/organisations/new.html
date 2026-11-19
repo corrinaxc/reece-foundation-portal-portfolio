@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+    <title>Add Organisation</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+
+<div class="row">
+    <div class="page-content page-content--form">
+        <div class="hero page-hero hero-small">
+            <div class="container">
+                <h1 class="page-title">Add New Organisation</h1>
+            </div>
+        </div>
+
+        <div class="gf_browser_chrome gform_wrapper gravity-theme gform-theme--no-framework"
+             data-form-theme="gravity-theme" data-form-index="0" id="gform_wrapper_3">
+
+            <div class="gform_heading">
+                <p class="gform_required_legend">
+                    <span class="gfield_required gfield_required_asterisk">*</span> indicates required fields
+                </p>
+            </div>
+
+            <form th:action="@{/organisations/new}" method="post"
+                  th:object="${organisationForm}">
+
+                <div class="gform-body gform_body">
+                    <div id="gform_fields_3" class="gform_fields top_label form_sublabel_below description_below">
+
+                        <!-- Section: General Information -->
+                        <div id="field_3_2"
+                             class="gfield gfield--type-section gsection gfield--width-full field_sublabel_below">
+                            <h3 class="gsection_title">General Information</h3>
+                        </div>
+
+                        <!-- Organisation Name -->
+                        <div id="field_3_1"
+                             class="gfield gfield--type-text gfield--width-half gfield_contains_required field_sublabel_below">
+                            <label class="gfield_label gform-field-label" for="input_3_1">
+                                Organisation Name
+                                <span class="gfield_required"><span
+                                        class="gfield_required gfield_required_asterisk">*</span></span>
+                            </label>
+                            <div class="ginput_container ginput_container_text">
+                                <input th:field="*{organisationName}" id="input_3_1" type="text" class="large"/>
+                            </div>
+                            <div th:if="${#fields.hasErrors('organisationName')}" th:errors="*{organisationName}" class="gfield_error"></div>
+                        </div>
+
+                        <!-- Organisation Type -->
+                        <div id="field_3_3"
+                             class="gfield gfield--type-text gfield--width-half gfield_contains_required field_sublabel_below">
+                            <label class="gfield_label gform-field-label" for="organisationType">
+                                Organisation Type
+                                <span class="gfield_required"><span
+                                        class="gfield_required gfield_required_asterisk">*</span></span>
+                            </label>
+                            <div class="ginput_container ginput_container_select">
+                                <select id="organisationType" th:field="*{organisationType}" class="large new-application-select">
+                                    <option value="">-- Select Org Type --</option>
+                                    <option th:each="t : ${orgTypes}"
+                                            th:value="${t}"
+                                            th:text="${t}"></option>
+                                </select>
+                            </div>
+                            <div th:if="${#fields.hasErrors('organisationType')}" th:errors="*{organisationType}" class="gfield_error"></div>
+                        </div>
+
+                        <!-- Reg Number -->
+                        <div id="field_3_4"
+                             class="gfield gfield--type-text gfield--width-half gfield_contains_required field_sublabel_below">
+                            <label class="gfield_label gform-field-label" for="input_3_4">
+                                Charity / Company Reg No.
+                                <span class="gfield_required"><span
+                                        class="gfield_required gfield_required_asterisk">*</span></span>
+                            </label>
+                            <div class="ginput_container ginput_container_text">
+                                <input th:field="*{regNumber}" id="input_3_4" type="text" class="large"/>
+                            </div>
+                            <div th:if="${#fields.hasErrors('regNumber')}" th:errors="*{regNumber}" class="gfield_error"></div>
+                        </div>
+
+                        <!-- Org Note -->
+                        <div id="orgNote"
+                             class="gfield gfield--type-text gfield--width-full field_sublabel_below">
+                            <label class="gfield_label gform-field-label" for="input_3_6">Notes</label>
+                            <div class="ginput_container ginput_container_textarea">
+                                <textarea th:field="*{organisationNote}" id="input_org_note" class="textarea large"
+                                          rows="10" cols="30"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Section: Contact Details -->
+                        <div id="field_3_15"
+                             class="gfield gfield--type-section gsection gfield--width-full field_sublabel_below">
+                            <h3 class="gsection_title">Contact Details</h3>
+                        </div>
+
+                        <!-- Address -->
+                        <div id="field_3_6"
+                             class="gfield gfield--type-text gfield--width-full field_sublabel_below">
+                            <label class="gfield_label gform-field-label" for="input_3_6">Office Address</label>
+                            <div class="ginput_container ginput_container_textarea">
+                                <textarea th:field="*{address}" id="input_3_6" class="textarea large"
+                                          rows="10" cols="50"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Contact Name -->
+                        <div id="field_3_8"
+                             class="gfield gfield--type-text gfield--width-half field_sublabel_below">
+                            <label class="gfield_label gform-field-label" for="input_3_8">Name of contact</label>
+                            <div class="ginput_container ginput_container_text">
+                                <input th:field="*{name}" id="input_3_8" type="text" class="large"/>
+                            </div>
+                        </div>
+
+                        <!-- Contact Job Title -->
+                        <div id="field_3_9"
+                             class="gfield gfield--type-text gfield--width-half field_sublabel_below">
+                            <label class="gfield_label gform-field-label" for="input_3_9">Job title of contact</label>
+                            <div class="ginput_container ginput_container_text">
+                                <input th:field="*{jobTitle}" id="input_3_9" type="text" class="large"/>
+                            </div>
+                        </div>
+
+                        <!-- Telephone -->
+                        <div id="field_3_10"
+                             class="gfield gfield--type-text gfield--width-half field_sublabel_below">
+                            <label class="gfield_label gform-field-label" for="input_3_10">Tel No.</label>
+                            <div class="ginput_container ginput_container_text">
+                                <input th:field="*{telephone}" id="input_3_10" type="text" class="large"/>
+                            </div>
+                            <div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="gfield_error"></div>
+                        </div>
+
+                        <!-- Email -->
+                        <div id="field_3_61"
+                             class="gfield gfield--type-text gfield--width-half field_sublabel_below">
+                            <label class="gfield_label gform-field-label" for="input_3_61">Email</label>
+                            <div class="ginput_container ginput_container_email">
+                                <input th:field="*{email}" id="input_3_61" type="text" class="large"/>
+                            </div>
+                            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="gfield_error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gform_footer top_label">
+                    <button type="submit" class="gform_button button btn btn--primary">Add Organisation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

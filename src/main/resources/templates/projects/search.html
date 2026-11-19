@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+    <title>Project Search</title>
+    <style>
+        .search-form { max-width: 900px; margin: 0 auto 30px; }
+        .search-fields {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .search-fields .field { flex: 1 1 220px; display: flex; flex-direction: column; }
+        .search-fields label { font-weight: bold; margin-bottom: 4px; }
+        .search-fields input[type="text"],
+        .search-fields select {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .type-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .type-radio { position: absolute; opacity: 0; pointer-events: none; }
+        .type-tab {
+            display: inline-block;
+            padding: 6px 16px;
+            border: 1px solid #710627;
+            border-radius: 20px;
+            color: #710627;
+            cursor: pointer;
+            font-size: 14px;
+            user-select: none;
+        }
+        .type-radio:checked + .type-tab {
+            background-color: #f83832;
+            border-color: #f83832;
+            color: #fff;
+        }
+        .search-actions { display: flex; gap: 12px; justify-content: center; }
+        .search-results { max-width: 1100px; margin: 0 auto; }
+        .no-results { text-align: center; color: #666; }
+    </style>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+<div class="page-content page-content--form">
+    <div class="hero page-hero hero-small">
+        <div class="container">
+            <h1 class="page-title">Project Search</h1>
+        </div>
+    </div>
+
+    <form method="get" action="/projects/search" class="search-form">
+        <div class="search-fields">
+            <div class="field">
+                <label for="projectNumber">Project ID</label>
+                <input type="text" id="projectNumber" name="projectNumber" th:value="${selectedProjectNumber}" />
+            </div>
+            <div class="field">
+                <label for="organisationId">Organisation</label>
+                <select id="organisationId" name="organisationId">
+                    <option value="">All</option>
+                    <option th:each="o : ${organisations}"
+                            th:value="${o.id}"
+                            th:text="${o.organisationName}"
+                            th:selected="${selectedOrganisationId != null and selectedOrganisationId == o.id}">
+                    </option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="projectName">Project Name</label>
+                <input type="text" id="projectName" name="projectName" th:value="${selectedProjectName}" />
+            </div>
+        </div>
+
+        <div class="type-bar" role="group" aria-label="Project type">
+            <input type="radio" class="type-radio" id="type-all" name="classificationId" value=""
+                   th:checked="${selectedClassificationId == null}" />
+            <label for="type-all" class="type-tab">All Types</label>
+
+            <th:block th:each="c : ${classifications}">
+                <input type="radio" class="type-radio" th:id="${'type-' + c.id}" name="classificationId"
+                       th:value="${c.id}"
+                       th:checked="${selectedClassificationId != null and selectedClassificationId == c.id}" />
+                <label th:for="${'type-' + c.id}" class="type-tab" th:text="${c.classificationName}"></label>
+            </th:block>
+        </div>
+
+        <div class="search-actions">
+            <button type="submit" class="btn btn--primary">Search</button>
+            <a th:href="@{/projects/search}" class="btn btn--secondary small">Clear</a>
+        </div>
+    </form>
+
+    <div class="search-results" th:if="${searched}">
+        <table class="results-table" th:if="${!projects.isEmpty()}">
+            <thead>
+            <tr>
+                <th>Project ID</th>
+                <th>Project Name</th>
+                <th>Organisation</th>
+                <th>Type</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="project : ${projects}"
+                th:onclick="'window.location.href=\'/projects/' + ${project.id} + '\''">
+                <td th:text="${project.id}"></td>
+                <td th:text="${project.projectName}"></td>
+                <td th:text="${project.organisation.organisationName}"></td>
+                <td th:text="${project.classificationLabel}"></td>
+                <td th:text="${project.status}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="no-results" th:if="${projects.isEmpty()}">No projects found matching your search.</p>
+    </div>
+</div>
+</div>
+
+<script>
+    document.querySelectorAll('.type-radio').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            radio.form.submit();
+        });
+    });
+</script>
+</body>
+</html>

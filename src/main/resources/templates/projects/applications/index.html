@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+    <title>Application Manager</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+    <div class="page-content page-content--form">
+        <div class="hero page-hero hero-small">
+            <div class="container">
+                <h1 class="page-title">Open Applications</h1>
+            </div>
+        </div>
+        <div class="gf_browser_chrome gform_wrapper gform_legacy_markup_wrapper gform-theme--no-framework" data-form-theme="legacy" data-form-index="0" id="gform_wrapper_2">
+            <span class="mobile-cta "><a class="btn btn--primary" href="/projects/applications/new">New Application</a></span>
+            <table class="results-table">
+                <thead>
+                <tr>
+                    <th>Project Number</th>
+                    <th>Project Name</th>
+                    <th>Organisation</th>
+                    <th>Classification</th>
+                    <th>Sub Classification</th>
+                    <th>Status</th>
+                    <th>Application Date</th>
+                    <th>Date Entered</th>
+                    <th>Total Application Value</th>
+                    <th>Owner</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="project : ${projects}"
+                    th:onclick="'window.location.href=\'/projects/' + ${project.id} + '\''">
+                    <td th:text="${project.id}"></td>
+                    <td th:text="${project.projectName}"></td>
+                    <td th:text="${project.organisation.organisationName}"></td>
+                    <td th:text="${project.classificationNames}"></td>
+                    <td th:text="${project.subClassificationNames.isEmpty() ? '-' : project.subClassificationNames}"></td>
+                    <td th:text="${project.status}"></td>
+                    <td th:text="${project.applicationDate != null ? #dates.format(project.applicationDate, 'dd/MM/yyyy') : '-'}"></td>
+                    <td th:text="${project.dateEntered != null ? #dates.format(project.dateEntered, 'dd/MM/yyyy') : '-'}"></td>
+                    <td th:text="${project.totalValue != null ? '£' + #numbers.formatDecimal(project.totalValue, 0, 'COMMA', 2, 'POINT') : '-'}"></td>
+                    <td th:text="${project.owner != null and project.owner.ownerName != null ? project.owner.ownerName : 'Unassigned'}"></td>
+                </tr>
+                </tbody>
+            </table></div>
+    </div>
+</div>
+</body>
+</html>

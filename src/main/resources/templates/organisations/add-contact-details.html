@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/main.css"/>
+	<link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+	<title>Add Contact Details</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+		<div class="page-content page-content--form">
+			<div class="hero page-hero hero-small hero-has-back">
+				<div class="container">
+					<a href="#" class="btn btn--secondary" onclick="history.back(); return false;">←</a>
+					<h1 class="page-title" th:text="'Add Contact Details for ' + ${organisation.organisationName}"></h1>
+				</div>
+			</div>
+			<div class="container container--small contact-us clearfix">
+			<div class="page-content page-content--form">
+			<div class="g_browser_chrome gform_wrapper gform_legacy_markup_wapper gform-theme--no-framework">
+				<form th:action="@{/organisations/{id}/add-contact-details(id=${organisation.id})}"
+					  th:object="${organisationContactDetailsForm}" method="post">
+					<div class="gform-body gform_body">
+						<ul id="gform_fields_2" class="gform_fields top_label form_sublabel_below description_below">
+							<li id="field_2_1"
+								class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="name">Name:<span
+									class="gfield_required"><span
+									class="gfield_required gfield_required_asterisk">*</span></span></label>
+								<div class="ginput_container ginput_container_text">
+									<input type="text" id="name" th:field="*{name}" class="large"/>
+								</div>
+								<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="gfield_error"></div>
+							</li>
+							<li id="field_2_2"
+								class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="jobTitle">Job Title:</label>
+								<div class="ginput_container ginput_container_text">
+									<input type="text" id="jobTitle" th:field="*{jobTitle}" class="large"/>
+								</div>
+								<div th:if="${#fields.hasErrors('jobTitle')}" th:errors="*{jobTitle}" class="gfield_error"></div>
+							</li>
+							<li id="field_2_3"
+								class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_3"><label class="gfield_label gform-field-label" for="address">Address:</label>
+								<div class="ginput_container ginput_container_textarea">
+									<textarea id="address" th:field="*{address}" class="textarea medium" rows="4" cols="50"></textarea>
+								</div>
+								<div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="gfield_error"></div>
+							</li>
+							<li id="field_2_4"
+								class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_4"><label class="gfield_label gform-field-label" for="email">Email:</label>
+								<div class="ginput_container ginput_container_text">
+									<input type="email" id="email" th:field="*{email}" class="large"/>
+								</div>
+								<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="gfield_error"></div>
+							</li>
+							<li id="field_2_5"
+								class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_5"><label class="gfield_label gform-field-label" for="telephone">Telephone:</label>
+								<div class="ginput_container ginput_container_text">
+									<input type="tel" id="telephone" th:field="*{telephone}" class="large"/>
+								</div>
+								<div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="gfield_error"></div>
+							</li>
+							<li id="field_2_6"
+								class="gfield gfield--type-textarea gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_6"><label class="gfield_label gform-field-label" for="notes">Notes:</label>
+								<div class="ginput_container ginput_container_textarea">
+									<textarea id="notes" th:field="*{notes}" class="textarea medium" rows="6" cols="50"></textarea>
+								</div>
+								<div th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}" class="gfield_error"></div>
+							</li>
+						</ul>
+					</div>
+					<div class="gform_footer top_label">
+						<button type="submit" class="gform_button button btn btn--primary">Add Contact Details</button>
+					</div>
+				</form>
+			</div>
+		</div>
+			</div>
+	</div>
+</div>
+
+</body>
+</html>

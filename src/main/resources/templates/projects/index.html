@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" href="/main.css"/>
+  <link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+  <title>Projects</title>
+  <style>
+    .filter-th { position: relative; white-space: nowrap; }
+    .filter-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: 4px;
+      font-size: 10px;
+      color: inherit;
+      opacity: 0.7;
+    }
+    .filter-toggle.active { opacity: 1; color: #c0392b; }
+    .filter-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 8px;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      min-width: 160px;
+      font-weight: normal;
+      text-transform: none;
+    }
+    .filter-dropdown.open { display: block; }
+    .filter-dropdown input,
+    .filter-dropdown select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 4px 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+<div class="page-content page-content--form">
+  <div class="hero page-hero hero-small">
+  <div class="container">
+    <h1 class="page-title">Projects</h1>
+  </div>
+</div>
+<div class="gf_browser_chrome gform_wrapper gform_legacy_markup_wrapper gform-theme--no-framework" data-form-theme="legacy" data-form-index="0" id="gform_wrapper_2">
+
+  <form method="get" action="/projects">
+  <button type="submit" style="position:absolute; left:-9999px;" aria-hidden="true" tabindex="-1">Filter</button>
+  <div style="display:flex; justify-content:flex-end; gap:12px; margin-bottom:12px;">
+    <a th:href="@{/projects}" class="btn btn--secondary small">Clear Filters</a>
+  </div>
+  <table class="results-table">
+    <thead>
+    <tr>
+      <th class="filter-th">
+        Project Number
+        <button type="button" class="filter-toggle" th:classappend="${selectedProjectNumber != null and !selectedProjectNumber.isEmpty()} ? ' active'" onclick="toggleFilter(event, 'filter-projectNumber')">&#9662;</button>
+        <div class="filter-dropdown" id="filter-projectNumber">
+          <input type="text" name="projectNumber" placeholder="Filter…" th:value="${selectedProjectNumber}" />
+        </div>
+      </th>
+      <th class="filter-th">
+        Project Name
+        <button type="button" class="filter-toggle" th:classappend="${selectedProjectName != null and !selectedProjectName.isEmpty()} ? ' active'" onclick="toggleFilter(event, 'filter-projectName')">&#9662;</button>
+        <div class="filter-dropdown" id="filter-projectName">
+          <input type="text" name="projectName" placeholder="Filter…" th:value="${selectedProjectName}" />
+        </div>
+      </th>
+      <th class="filter-th">
+        Organisation
+        <button type="button" class="filter-toggle" th:classappend="${selectedOrganisationId != null} ? ' active'" onclick="toggleFilter(event, 'filter-organisationId')">&#9662;</button>
+        <div class="filter-dropdown" id="filter-organisationId">
+          <select name="organisationId" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option th:each="o : ${organisations}"
+                    th:value="${o.id}"
+                    th:text="${o.organisationName}"
+                    th:selected="${selectedOrganisationId != null and selectedOrganisationId == o.id}">
+            </option>
+          </select>
+        </div>
+      </th>
+      <th class="filter-th">
+        Classification
+        <button type="button" class="filter-toggle" th:classappend="${selectedClassificationId != null} ? ' active'" onclick="toggleFilter(event, 'filter-classificationId')">&#9662;</button>
+        <div class="filter-dropdown" id="filter-classificationId">
+          <select name="classificationId" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option th:each="c : ${classifications}"
+                    th:value="${c.id}"
+                    th:text="${c.classificationName}"
+                    th:selected="${selectedClassificationId != null and selectedClassificationId == c.id}">
+            </option>
+          </select>
+        </div>
+      </th>
+      <th class="filter-th">
+        Sub Classification
+        <button type="button" class="filter-toggle" th:classappend="${selectedSubClassificationId != null} ? ' active'" onclick="toggleFilter(event, 'filter-subClassificationId')">&#9662;</button>
+        <div class="filter-dropdown" id="filter-subClassificationId">
+          <select name="subClassificationId" onchange="this.form.submit()">
+            <option value="">All</option>
+            <optgroup th:each="c : ${classifications}"
+                      th:unless="${#lists.isEmpty(c.subClassifications)}"
+                      th:label="${c.classificationName}">
+              <option th:each="s : ${c.subClassifications}"
+                      th:value="${s.id}"
+                      th:text="${s.subClassificationName}"
+                      th:selected="${selectedSubClassificationId != null and selectedSubClassificationId == s.id}">
+              </option>
+            </optgroup>
+          </select>
+        </div>
+      </th>
+      <th class="filter-th">
+        Status
+        <button type="button" class="filter-toggle" th:classappend="${selectedStatus != null and !selectedStatus.isEmpty()} ? ' active'" onclick="toggleFilter(event, 'filter-status')">&#9662;</button>
+        <div class="filter-dropdown" id="filter-status">
+          <select name="status" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option th:each="s : ${statuses}"
+                    th:value="${s}"
+                    th:text="${s}"
+                    th:selected="${selectedStatus != null and selectedStatus == s}">
+            </option>
+          </select>
+        </div>
+      </th>
+      <th>Total Application Value</th>
+      <th>Awarded Amount</th>
+      <th class="filter-th">
+        Owner
+        <button type="button" class="filter-toggle" th:classappend="${selectedOwnerId != null} ? ' active'" onclick="toggleFilter(event, 'filter-ownerId')">&#9662;</button>
+        <div class="filter-dropdown" id="filter-ownerId">
+          <select name="ownerId" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option th:each="o : ${owners}"
+                    th:value="${o.id}"
+                    th:text="${o.ownerName}"
+                    th:selected="${selectedOwnerId != null and selectedOwnerId == o.id}">
+            </option>
+          </select>
+        </div>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="project : ${projects}"
+        th:onclick="'window.location.href=\'/projects/' + ${project.id} + '\''">
+      <td th:text="${project.id}"></td>
+      <td th:text="${project.projectName}"></td>
+      <td th:text="${project.organisation.organisationName}"></td>
+      <td th:text="${project.classificationNames}"></td>
+      <td th:text="${project.subClassificationNames.isEmpty() ? '-' : project.subClassificationNames}"></td>
+      <td th:text="${project.status}"></td>
+      <td th:text="${project.totalValue != null ? '£' + #numbers.formatDecimal(project.totalValue, 0, 'COMMA', 2, 'POINT') : '-'}"></td>
+      <td th:text="${project.amountAwarded != null ? '£' + #numbers.formatDecimal(project.amountAwarded.amountAwardedValue, 0, 'COMMA', 2, 'POINT') : '-'}"></td>
+      <td th:text="${project.owner != null and project.owner.ownerName != null ? project.owner.ownerName : '-'}"></td>
+    </tr>
+    </tbody>
+  </table>
+  </form>
+</div>
+</div>
+</div>
+<script>
+  function toggleFilter(event, id) {
+    event.stopPropagation();
+    document.querySelectorAll('.filter-dropdown.open').forEach(function (el) {
+      if (el.id !== id) el.classList.remove('open');
+    });
+    document.getElementById(id).classList.toggle('open');
+  }
+  document.querySelectorAll('.filter-dropdown').forEach(function (el) {
+    el.addEventListener('click', function (event) { event.stopPropagation(); });
+  });
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.filter-dropdown.open').forEach(function (el) {
+      el.classList.remove('open');
+    });
+  });
+</script>
+</body>
+</html>

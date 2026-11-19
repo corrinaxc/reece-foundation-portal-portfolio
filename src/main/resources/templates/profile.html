@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/main.css"/>
+	<link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+	<title>Profile</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+
+<div class="row">
+	<div class="page-content page-content--form">
+		<div class="hero page-hero hero-small">
+			<div class="container">
+				<h1 class="page-title" th:text="'Welcome, ' + ${owner.ownerName} + '!'"></h1>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="flex-wrapper">
+				<div class="page-content blog-posts small-padding col--100">
+					<div class="u-flex-a-stretch">
+
+						<div class="case-study col--50">
+							<h3>My Projects</h3>
+							<table class="results-table">
+								<thead>
+								<tr>
+									<th>Name</th>
+									<th>Status</th>
+									<th>Total Value</th>
+									<th>Amount Awarded</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="project : ${projects}"
+									th:onclick="'window.location.href=\'/projects/' + ${project.id} + '\''">
+									<td th:text="${project.projectName}"></td>
+									<td th:text="${project.status}"></td>
+									<td th:text="${project.totalValue != null ? '£' + #numbers.formatDecimal(project.totalValue, 0, 'COMMA', 2, 'POINT') : '-'}"></td>
+									<td th:text="${project.amountAwarded != null ? '£' + #numbers.formatDecimal(project.amountAwarded.amountAwardedValue, 0, 'COMMA', 2, 'POINT') : '-'}"></td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="case-study col--50">
+							<h3>My Actions</h3>
+							<table class="results-table">
+								<thead>
+								<tr>
+									<th>Project</th>
+									<th>Description</th>
+									<th>Due Date</th>
+									<th>Completed</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="action : ${actions}"
+									th:attr="data-action-id=${action.id},data-due=${action.dueDate != null ? #dates.format(action.dueDate, 'yyyy-MM-dd') : ''}"
+									th:data-href="@{/projects/{projectId}/action/{actionId}/edit(projectId=${action.project.id}, actionId=${action.id})}"
+									onclick="if (!event.target.closest('a, button, form, input, label')) window.location=this.dataset.href"
+									style="cursor:pointer;">
+									<td>
+										<a class="plain-link"
+										   th:href="@{/projects/{id}(id=${action.project.id})}"
+										   th:text="${action.project.projectName}"></a>
+									</td>
+									<td th:text="${action.actionDescription}"></td>
+									<td th:text="${action.dueDate != null ? #dates.format(action.dueDate, 'dd/MM/yyyy') : '-'}"></td>
+									<td>
+										<form th:action="@{/projects/{projectId}/action/{actionId}/toggle-complete(
+                projectId=${action.project.id}, actionId=${action.id})}"
+											  method="post"
+											  data-action-complete>
+											<input type="hidden" name="returnTo" value="profile" />
+											<input type="checkbox"
+												   name="completed"
+												   value="true"
+												   th:checked="${action.completed}"
+												   th:id="'completed-' + ${action.id}"
+												   th:attr="aria-label='Mark complete: ' + ${action.actionDescription}"
+												   onchange="this.form.submit()" />
+										</form>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script th:src="@{/js/actions.js}"></script>
+</body>
+</html>

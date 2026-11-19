@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/main.css"/>
+	<link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+	<title>500 Error</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+	<div class="page-content page-content--form">
+		<div class="hero page-hero hero-small">
+			<div class="container">
+				<h1 class="page-title">Something went wrong. Please contact the site administrator.</h1>
+			</div>
+		</div>
+		<div class="gf_browser_chrome gform_wrapper gform_legacy_markup_wrapper gform-theme--no-framework" data-form-theme="legacy" data-form-index="0" id="gform_wrapper_2">
+			<img class="error-image" src="/500.png">
+		</div>
+	</div>
+</div>
+</body>
+</html>

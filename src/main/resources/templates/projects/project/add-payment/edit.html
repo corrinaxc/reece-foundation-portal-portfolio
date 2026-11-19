@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/main.css"/>
+	<link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+	<title>Edit Payment</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+		<div class="page-content page-content--form">
+			<div class="hero page-hero hero-small hero-has-back">
+				<div class="container">
+					<a href="#" class="btn btn--secondary" onclick="history.back(); return false;">←</a>
+					<h1 class="page-title" th:text="'Edit payment for: ' + ${project.projectName}"></h1>
+					<div>
+						<h2 ></h2>
+					</div>
+				</div>
+			</div>
+			<div class="container container--small contact-us clearfix">
+			<div class="page-content page-content--form">
+						<div class="g_browser_chrome gform_wrapper gform_legacy_markup_wapper gform-theme--no-framework">
+							<form th:action="@{/projects/{projectId}/payment/{paymentId}/edit(
+        				projectId=${project.id},
+        				paymentId=${payment.id})}"
+								  th:object="${addPaymentForm}"
+								  method="post">
+
+								<div th:if="${#fields.hasGlobalErrors()}" class="gfield_error">
+									<p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+								</div>
+								<div class="gform-body gform_body">
+									<ul id="gform_fields_2" class="gform_fields top_label form_sublabel_below description_below">
+										<li id="payment_amount"
+											class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+											data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="payment_amount">Payment Amount:<span
+												class="gfield_required"><span
+												class="gfield_required gfield_required_asterisk">*</span></span></label>
+											<div class="ginput_container ginput_container_text"><input th:field="*{paymentAmount}" id="payee_amount_input" type="text"
+																									   value="" class="large"
+																									   aria-required="true"
+																									   aria-invalid="false"></div>
+											<div th:if="${#fields.hasErrors('paymentAmount')}" th:errors="*{paymentAmount}" class="gfield_error"></div>										</li>
+
+										<li id="payment_due_date"
+											class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+											data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="payment_due_date_input">Payment Due Date:<span
+												class="gfield_required"><span
+												class="gfield_required gfield_required_asterisk">*</span></span></label>
+											<div class="ginput_container ginput_container_text"><input th:field="*{paymentDueDate}" id="payment_due_date_input" type="date"
+																									   value="" class="large"
+																									   aria-required="true"
+																									   aria-invalid="false"></div>
+											<div th:if="${#fields.hasErrors('paymentDueDate')}" th:errors="*{paymentDueDate}" class="gfield_error"></div>
+										</li>
+
+										<li id="invoice_received_item"
+											class="gfield gfield--type-select gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+											data-js-reload="field_2_1">
+											<label class="gfield_label gform-field-label" for="invoice_received">
+												Invoice Received:
+											</label>
+											<div class="ginput_container ginput_container_select">
+												<select id="invoice_received" th:field="*{invoiced}" class="large new-application-select">
+													<option th:value="true">Yes</option>
+													<option th:value="false">No</option>
+												</select>
+											</div>
+											<div th:if="${#fields.hasErrors('invoiced')}" th:errors="*{invoiced}" class="gfield_error"></div>
+										</li>
+
+										<li id="invoice_link"
+											class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+											data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="invoice_link_input">Invoice Link:</label>
+											<div class="ginput_container ginput_container_text"><input th:field="*{invoiceLink}" id="invoice_link_input" type="text"
+																									   value="" class="large"
+																									   aria-required="true"
+																									   aria-invalid="false"></div>
+											<div th:if="${#fields.hasErrors('invoiceLink')}" th:errors="*{invoiceLink}" class="gfield_error"></div>
+										</li>
+
+										<li
+												class="gfield gfield--type-select gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+												data-js-reload="field_2_1">
+											<label class="gfield_label gform-field-label" for="bank_details">
+												Bank Details:
+											</label>
+											<div class="ginput_container ginput_container_select">
+												<select id="bank_details" th:field="*{bankDetailId}" class="large new-application-select">
+													<option value="">-- Select Bank Details --</option>
+													<option th:each="bd : ${bankDetails}"
+															th:value="${bd.id}"
+															th:text="${bd.payee + ' - ' + bd.accountNumber + ' (' +
+														#strings.substring(bd.sortCode, 0, 2) + '-' +
+														#strings.substring(bd.sortCode, 2, 4) + '-' +
+														#strings.substring(bd.sortCode, 4, 6) + ')'}">></option>
+												</select>
+											</div>
+											<div th:if="${#fields.hasErrors('bankDetailId')}" th:errors="*{bankDetailId}" class="gfield_error"></div>
+
+											<span class="mobile-cta">
+							  <a class="btn btn--primary"
+								 th:href="@{/projects/{id}/bank-details/add-bank-details(id=${project.id})}">
+								 Add Bank Details
+							  </a>
+							</span>
+										<li id="paid_item"
+											class="gfield gfield--type-select gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+											data-js-reload="field_2_1">
+											<label class="gfield_label gform-field-label" for="paid">
+												Paid:
+											</label>
+											<div class="ginput_container ginput_container_select">
+												<select id="paid" th:field="*{paid}" class="large new-application-select">
+													<option th:value="true">Yes</option>
+													<option th:value="false">No</option>
+												</select>
+											</div>
+											<div th:if="${#fields.hasErrors('paid')}" th:errors="*{paid}" class="gfield_error"></div>
+										</li>
+
+										<li id="payment_actual_date"
+											class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+											data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="payment_actual_date_input">Payment Actual Date:</label>
+											<div class="ginput_container ginput_container_text"><input th:field="*{paymentActualDate}" id="payment_actual_date_input" type="date"
+																									   value="" class="large"
+																									   aria-required="true"
+																									   aria-invalid="false"></div>
+											<div th:if="${#fields.hasErrors('paymentActualDate')}" th:errors="*{paymentActualDate}" class="gfield_error"></div>
+										</li>
+
+										<li id="receipt_received_item"
+											class="gfield gfield--type-select gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+											data-js-reload="field_2_1">
+											<label class="gfield_label gform-field-label" for="receipt_received">
+												Receipt Received:
+											</label>
+											<div class="ginput_container ginput_container_select">
+												<select id="receipt_received" th:field="*{receiptReceived}" class="large new-application-select">
+													<option th:value="true">Yes</option>
+													<option th:value="false">No</option>
+												</select>
+											</div>
+											<div th:if="${#fields.hasErrors('receiptReceived')}" th:errors="*{receiptReceived}" class="gfield_error"></div>
+										</li>
+
+										<li id="receipt_link"
+											class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+											data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="receipt_link_input">Receipt Link:</label>
+											<div class="ginput_container ginput_container_text"><input th:field="*{receiptLink}" id="receipt_link_input" type="text"
+																									   value="" class="large"
+																									   aria-required="true"
+																									   aria-invalid="false"></div>
+											<div th:if="${#fields.hasErrors('receiptLink')}" th:errors="*{receiptLink}" class="gfield_error"></div>
+										</li>
+
+
+
+			<!--							<li id="link"-->
+			<!--								class="gfield gfield&#45;&#45;type-email gfield&#45;&#45;width-full field_sublabel_below gfield&#45;&#45;no-description field_description_below gfield_visibility_visible"-->
+			<!--								data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="link_input">Link:</label>-->
+			<!--								<div class="ginput_container ginput_container_email">-->
+			<!--									<input th:field="*{link}" id="link_input" type="text" value="" class="large" aria-required="true"-->
+			<!--										   aria-invalid="false">-->
+			<!--								</div>-->
+			<!--								<div th:if="${#fields.hasErrors('link')}" th:errors="*{link}" class="gfield_error"></div>-->
+			<!--							</li>-->
+
+			<!--							<li id="note"-->
+			<!--								class="gfield gfield&#45;&#45;type-email gfield&#45;&#45;width-full field_sublabel_below gfield&#45;&#45;no-description field_description_below gfield_visibility_visible"-->
+			<!--								data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="note_input">Note:</label>-->
+			<!--								<div class="ginput_container ginput_container_email">-->
+			<!--									<input th:field="*{note}" id="note_input" type="text" value="" class="large" aria-required="true"-->
+			<!--										   aria-invalid="false">-->
+			<!--								</div>-->
+			<!--								<div th:if="${#fields.hasErrors('note')}" th:errors="*{note}" class="gfield_error"></div>-->
+			<!--							</li>-->
+									</ul>
+			<!--					</div>-->
+			<!--					<div class="gform_footer top_label">-->
+			<!--						<button type="submit" class="gform_button button btn btn&#45;&#45;primary">Save</button>-->
+			<!--					</div>-->
+						</div>
+							<div class="gform_footer top_label">
+								<button type="submit" class="gform_button button btn btn--primary">Save</button>
+							</div>
+							</form>
+		</div>
+			</div>
+	</div>
+</div>
+
+</body>
+</html>

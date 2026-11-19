@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/main.css"/>
+	<link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+	<title>Add Bank Details</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+		<div class="page-content page-content--form">
+			<div class="hero page-hero hero-small hero-has-back">
+				<div class="container">
+					<a href="#" class="btn btn--secondary" onclick="history.back(); return false;">←</a>
+					<h1 class="page-title" th:text="'Add Bank Details for Project: ' + ${project.projectName}"></h1>
+
+				</div>
+			</div>
+			<div class="container container--small contact-us clearfix">
+			<div class="page-content page-content--form">
+			<div class="g_browser_chrome gform_wrapper gform_legacy_markup_wapper gform-theme--no-framework">
+				<form th:action="@{/projects/{id}/bank-details/add-bank-details(id=${project.id})}"
+					  th:object="${projectBankDetailsForm}"
+					  method="post">
+					<div th:if="${#fields.hasGlobalErrors()}" class="gfield_error">
+						<p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+					</div>
+					<div class="gform-body gform_body">
+						<ul id="gform_fields_2" class="gform_fields top_label form_sublabel_below description_below">
+							<li id="payee"
+								class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="payee">Payee:<span
+									class="gfield_required"><span
+									class="gfield_required gfield_required_asterisk">*</span></span></label>
+								<div class="ginput_container ginput_container_text"><input th:field="*{payee}" id="payee_input" type="text"
+																						   value="" class="large"
+																						   aria-required="true"
+																						   aria-invalid="false"></div>
+								<div th:if="${#fields.hasErrors('payee')}" th:errors="*{payee}" class="gfield_error"></div>
+							</li>
+
+
+							<li id="account_number"
+								class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="account_number_input">Account Number:<span
+									class="gfield_required"><span
+									class="gfield_required gfield_required_asterisk">*</span></span></label>
+								<div class="ginput_container ginput_container_text"><input th:field="*{accountNumber}" id="account_number_input" type="text"
+																						   value="" class="large"
+																						   aria-required="true"
+																						   aria-invalid="false"></div>
+								<div th:if="${#fields.hasErrors('accountNumber')}" th:errors="*{accountNumber}" class="gfield_error"></div>
+							</li>
+
+							<li id="sort_code"
+								class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="sort_code_input">Sort Code:<span
+									class="gfield_required"><span
+									class="gfield_required gfield_required_asterisk">*</span></span></label>
+								<div class="ginput_container ginput_container_text"><input th:field="*{sortCode}" id="sort_code_input" type="text"
+																						   value="" class="large"
+																						   aria-required="true"
+																						   aria-invalid="false"></div>
+								<div th:if="${#fields.hasErrors('sortCode')}" th:errors="*{sortCode}" class="gfield_error"></div>
+							</li>
+							<li id="link"
+								class="gfield gfield--type-email gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="link_input">Link:</label>
+								<div class="ginput_container ginput_container_email">
+									<input th:field="*{link}" id="link_input" type="text" value="" class="large" aria-required="true"
+										   aria-invalid="false">
+								</div>
+								<div th:if="${#fields.hasErrors('link')}" th:errors="*{link}" class="gfield_error"></div>
+							</li>
+
+							<li id="note"
+								class="gfield gfield--type-email gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="note_input">Note:</label>
+								<div class="ginput_container ginput_container_email">
+									<input th:field="*{note}" id="note_input" type="text" value="" class="large" aria-required="true"
+										   aria-invalid="false">
+								</div>
+								<div th:if="${#fields.hasErrors('note')}" th:errors="*{note}" class="gfield_error"></div>
+							</li>
+						</ul>
+					</div>
+					<div class="gform_footer top_label">
+						<button type="submit" class="gform_button button btn btn--primary">Add Bank Details</button>
+					</div>
+				</form>
+			</div>
+		</div>
+			</div>
+	</div>
+</div>
+
+</body>
+</html>

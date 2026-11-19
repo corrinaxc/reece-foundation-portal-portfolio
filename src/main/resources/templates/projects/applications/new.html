@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+    <title>New Application</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+    <div class="page-content page-content--form">
+        <div class="hero page-hero hero-small">
+            <div class="container">
+                <h1 class="page-title">New Application</h1>
+            </div>
+            </div>
+            <div class="g_browser_chrome gform_wrapper gform_legacy_markup_wapper gform-theme--no-framework">
+                <form th:action="@{/projects/applications}" th:object="${projectForm}" method="post">
+                    <div class="gform-body gform_body">
+                        <ul id="gform_fields_2" class="gform_fields top_label form_sublabel_below description_below">
+                            <li id="field_2_1"
+                                class="gfield gfield--type-select gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_1">
+                                <label class="gfield_label gform-field-label" for="organisation">
+                                    Organisation:
+                                    <span class="gfield_required">
+            <span class="gfield_required gfield_required_asterisk">*</span>
+        </span>
+                                </label>
+                                <div class="ginput_container ginput_container_select">
+                                    <select id="organisation" th:field="*{organisationId}" class="large new-application-select">
+                                        <option value="">-- Select an Organisation --</option>
+                                        <option th:each="org : ${organisations}"
+                                                th:value="${org.id}"
+                                                th:text="${org.organisationName}"></option>
+                                    </select>
+                                </div>
+                                <div th:if="${#fields.hasErrors('organisationId')}" th:errors="*{organisationId}" class="gfield_error"></div>
+                                <div class="new-organisation-cta"><a class="btn btn--primary" href="/organisations/new">New Organisation</a></div>
+                            </li>
+                            <li id="field_2_2"
+                                class="gfield gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible">
+                                <label class="gfield_label gform-field-label">
+                                    Classification:
+                                    <span class="gfield_required">
+            <span class="gfield_required gfield_required_asterisk">*</span>
+        </span>
+                                </label>
+                                <div th:replace="~{fragments :: classificationPicker}"></div>
+                                <div th:if="${#fields.hasErrors('classificationIds')}" th:errors="*{classificationIds}" class="gfield_error"></div>
+                            </li>
+                            <li id="field_2_3"
+                                class="gfield gfield--type-email gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="projectName">Project Name:<span
+                                    class="gfield_required"><span
+                                    class="gfield_required gfield_required_asterisk">*</span></span></label>
+                                <div class="ginput_container ginput_container_email">
+                                    <input type="text" id="projectName" th:field="*{projectName}" class="large"/>
+                                </div>
+                                <div th:if="${#fields.hasErrors('projectName')}" th:errors="*{projectName}" class="gfield_error"></div>
+                            </li>
+                            <li id="field_2_4"
+                                class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_3"><label class="gfield_label gform-field-label"
+                                                                  for="overview">Overview:<span class="gfield_required gfield_required_asterisk">*</span>
+                                </span></label>                                    <span class="gfield_required">
+
+                                <div class="ginput_container ginput_container_textarea"><textarea id="overview" th:field="*{overview}" class="textarea large" rows="10" cols="50"></textarea></div>
+                                <div th:if="${#fields.hasErrors('overview')}" th:errors="*{overview}" class="gfield_error"></div>
+                            </li>
+                            <li id="field_2_5"
+                                class="gfield gfield--type-select gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_5">
+                                <label class="gfield_label gform-field-label" for="status">
+                                    Status:
+                                    <span class="gfield_required">
+            <span class="gfield_required gfield_required_asterisk">*</span>
+        </span>
+                                </label>
+                                <div class="ginput_container ginput_container_select">
+                                    <select id="status" th:field="*{status}" class="large new-application-select">
+                                        <option value="">-- Select Status --</option>
+                                        <option th:each="st : ${statuses}"
+                                                th:value="${st}"
+                                                th:text="${st}"></option>
+                                    </select>
+                                </div>
+                                <div th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="gfield_error"></div>
+                            </li>
+                            <li id="field_2_6"
+                                class="gfield gfield--type-email gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="totalValue">Total Value:<span
+                                    class="gfield_required"><span
+                                    class="gfield_required gfield_required_asterisk">*</span></span></label>
+                                <div class="ginput_container ginput_container_email">
+                                    <input type="number" id="totalValue" th:field="*{totalValue}" class="large" placeholder="£">
+                                </div>
+                                <div th:if="${#fields.hasErrors('totalValue')}" th:errors="*{totalValue}" class="gfield_error"></div>
+                            </li>
+                            <li id="field_2_7"
+                                class="gfield gfield--type-email gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="projectLength">Project Duration (months):<span
+                                    class="gfield_required"><span
+                                    class="gfield_required gfield_required_asterisk">*</span></span></label>
+                                <div class="ginput_container ginput_container_email">
+                                    <input type="number" id="projectLength" th:field="*{projectLength}" class="large">
+                                </div>
+                                <div th:if="${#fields.hasErrors('projectLength')}" th:errors="*{projectLength}" class="gfield_error"></div>
+                            </li>
+                            <li id="field_2_8"
+                                class="gfield gfield--type-email gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="applicationDate">Application Date:<span
+                                    class="gfield_required"><span
+                                    class="gfield_required gfield_required_asterisk">*</span></span></label>
+                                <div class="ginput_container ginput_container_email">
+                                    <input type="date" id="applicationDate" th:field="*{applicationDate}" class="large">
+                                </div>
+                                <div th:if="${#fields.hasErrors('applicationDate')}" th:errors="*{applicationDate}" class="gfield_error"></div>
+                            </li>
+                            <li id="field_2_9"
+                                class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_9"><label class="gfield_label gform-field-label" for="applicationLink">Application Link:</label>
+                                <div class="ginput_container ginput_container_text">
+                                    <input type="text" id="applicationLink" th:field="*{applicationLink}" class="large"/>
+                                </div>
+                                <div th:if="${#fields.hasErrors('applicationLink')}" th:errors="*{applicationLink}" class="gfield_error"></div>
+                            </li>
+                            <li class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible">
+                                <label class="gfield_label gform-field-label" for="budgetLink">Budget Link:</label>
+                                <div class="ginput_container ginput_container_text">
+                                    <input type="text" id="budgetLink" th:field="*{budgetLink}" class="large"/>
+                                </div>
+                                <div th:if="${#fields.hasErrors('budgetLink')}" th:errors="*{budgetLink}" class="gfield_error"></div>
+                            </li>
+                            <li class="gfield gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible">
+                                <label class="gfield_label gform-field-label">Does the project have potential for further funding?</label>
+                                <div class="checkbox-group" role="radiogroup">
+                                    <label class="checkbox-option">
+                                        <input type="radio" th:field="*{potentialFurtherFunding}" value="true" />
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="radio" th:field="*{potentialFurtherFunding}" value="false" />
+                                        <span>No</span>
+                                    </label>
+                                </div>
+                            </li>
+                            <li id="field_2_10"
+                                class="gfield gfield--type-select gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_10">
+                                <label class="gfield_label gform-field-label" for="owner">
+                                    Owner:
+                                </label>
+                                <div class="ginput_container ginput_container_select">
+                                    <select id="owner" th:field="*{ownerId}" class="large new-application-select">
+                                        <option value="">-- Select Owner --</option>
+                                        <option th:each="o : ${owners}"
+                                                th:value="${o.id}"
+                                                th:text="${o.ownerName}"></option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li id="field_2_11"
+                                class="gfield gfield--type-text gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+                                data-js-reload="field_2_3">
+                                <label class="gfield_label gform-field-label"
+                                                                  for="overview">Notes:</label>
+                                <div class="ginput_container ginput_container_textarea"><textarea id="projectNote" th:field="*{projectNote}" class="textarea large" rows="10" cols="50"></textarea></div>
+                                <div th:if="${#fields.hasErrors('projectNote')}" th:errors="*{projectNote}" class="gfield_error"></div>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="gform_footer top_label">
+                        <button type="submit" class="gform_button button btn btn--primary">Add Application / Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script th:src="@{/js/classification-picker.js}"></script>
+</body>
+</html>

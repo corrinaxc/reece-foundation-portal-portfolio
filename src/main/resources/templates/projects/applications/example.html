@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/main.css"/>
+	<title>New Application</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+
+<div class="row">
+	<div class="page-content page-content--form">
+		<div class="hero page-hero hero-small">
+			<div class="container">
+				<h1 class="page-title">New Application</h1>
+			</div>
+		</div>
+
+		<div class="gform_wrapper gform-theme--no-framework">
+			<!-- ✅ Bind directly to ProjectForm DTO -->
+			<form th:action="@{/projects/applications}" th:object="${projectForm}" method="post">
+
+				<ul class="gform_fields top_label form_sublabel_below description_below">
+
+					<!-- Organisation -->
+					<li class="gfield gfield--type-select gfield_contains_required">
+						<label class="gfield_label" for="organisation">
+							Organisation:
+							<span class="gfield_required"><span class="gfield_required_asterisk">*</span></span>
+						</label>
+						<div class="ginput_container ginput_container_select">
+							<select id="organisation" th:field="*{organisationId}" class="large new-application-select" required>
+								<option value="">-- Select an Organisation --</option>
+								<option th:each="org : ${organisations}"
+										th:value="${org.id}"
+										th:text="${org.organisationName}"></option>
+							</select>
+						</div>
+						<div th:if="${#fields.hasErrors('organisationId')}" th:errors="*{organisationId}" class="gfield_error"></div>
+					</li>
+
+					<!-- Classification -->
+					<li class="gfield gfield--type-select gfield_contains_required">
+						<label class="gfield_label" for="classification">
+							Classification:
+							<span class="gfield_required"><span class="gfield_required_asterisk">*</span></span>
+						</label>
+						<div class="ginput_container ginput_container_select">
+							<select id="classification" th:field="*{classificationId}" class="large new-application-select" required>
+								<option value="">-- Select a Classification --</option>
+								<option th:each="class : ${classifications}"
+										th:value="${class.id}"
+										th:text="${class.classificationName}"></option>
+							</select>
+						</div>
+						<div th:if="${#fields.hasErrors('classificationId')}" th:errors="*{classificationId}" class="gfield_error"></div>
+					</li>
+
+					<!-- Project Name -->
+					<li class="gfield gfield--type-text gfield_contains_required">
+						<label class="gfield_label" for="projectName">
+							Project Name:
+							<span class="gfield_required"><span class="gfield_required_asterisk">*</span></span>
+						</label>
+						<div class="ginput_container ginput_container_text">
+							<input type="text" id="projectName" th:field="*{projectName}" class="large" required/>
+						</div>
+						<div th:if="${#fields.hasErrors('projectName')}" th:errors="*{projectName}" class="gfield_error"></div>
+					</li>
+
+					<!-- Overview -->
+					<li class="gfield gfield--type-textarea gfield_contains_required">
+						<label class="gfield_label" for="overview">
+							Overview:
+							<span class="gfield_required"><span class="gfield_required_asterisk">*</span></span>
+						</label>
+						<div class="ginput_container ginput_container_textarea">
+							<textarea id="overview" th:field="*{overview}" class="textarea large" rows="6" required></textarea>
+						</div>
+						<div th:if="${#fields.hasErrors('overview')}" th:errors="*{overview}" class="gfield_error"></div>
+					</li>
+
+					<!-- Status -->
+					<li class="gfield gfield--type-select gfield_contains_required">
+						<label class="gfield_label" for="status">
+							Status:
+							<span class="gfield_required"><span class="gfield_required_asterisk">*</span></span>
+						</label>
+						<div class="ginput_container ginput_container_select">
+							<select id="status" th:field="*{status}" class="large new-application-select" required>
+								<option value="">-- Select Status --</option>
+								<option th:each="st : ${statuses}"
+										th:value="${st}"
+										th:text="${st}"></option>
+							</select>
+						</div>
+						<div th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="gfield_error"></div>
+					</li>
+
+					<!-- Total Value -->
+					<li class="gfield gfield--type-number gfield_contains_required">
+						<label class="gfield_label" for="totalValue">
+							Total Value:
+							<span class="gfield_required"><span class="gfield_required_asterisk">*</span></span>
+						</label>
+						<div class="ginput_container ginput_container_number">
+							<input type="number" step="0.01" id="totalValue" th:field="*{totalValue}" class="medium" placeholder="£" required/>
+						</div>
+						<div th:if="${#fields.hasErrors('totalValue')}" th:errors="*{totalValue}" class="gfield_error"></div>
+					</li>
+
+					<!-- Project Duration -->
+					<li class="gfield gfield--type-number gfield_contains_required">
+						<label class="gfield_label" for="projectLength">
+							Project Duration (months):
+							<span class="gfield_required"><span class="gfield_required_asterisk">*</span></span>
+						</label>
+						<div class="ginput_container ginput_container_number">
+							<input type="number" id="projectLength" th:field="*{projectLength}" class="large" required/>
+						</div>
+						<div th:if="${#fields.hasErrors('projectLength')}" th:errors="*{projectLength}" class="gfield_error"></div>
+					</li>
+
+					<!-- Application Date -->
+					<li class="gfield gfield--type-date gfield_contains_required">
+						<label class="gfield_label" for="applicationDate">
+							Application Date:
+							<span class="gfield_required"><span class="gfield_required_asterisk">*</span></span>
+						</label>
+						<div class="ginput_container ginput_container_date">
+							<input type="date" id="applicationDate" th:field="*{applicationDate}" class="large" required/>
+						</div>
+						<div th:if="${#fields.hasErrors('applicationDate')}" th:errors="*{applicationDate}" class="gfield_error"></div>
+					</li>
+
+					<!-- Date Entered -->
+					<li class="gfield gfield--type-date gfield_contains_required">
+						<label class="gfield_label" for="dateEntered">
+							Date Entered:
+							<span class="gfield_required"><span class="gfield_required_asterisk">*</span></span>
+						</label>
+						<div class="ginput_container ginput_container_date">
+							<input type="date" id="dateEntered" th:field="*{dateEntered}" class="large" required/>
+						</div>
+						<div th:if="${#fields.hasErrors('dateEntered')}" th:errors="*{dateEntered}" class="gfield_error"></div>
+					</li>
+
+					<!-- Owner (optional) -->
+					<li class="gfield gfield--type-select">
+						<label class="gfield_label" for="owner">Owner:</label>
+						<div class="ginput_container ginput_container_select">
+							<select id="owner" th:field="*{ownerId}" class="large new-application-select">
+								<option value="">-- Select Owner --</option>
+								<option th:each="o : ${owners}"
+										th:value="${o.id}"
+										th:text="${o.ownerName}"></option>
+							</select>
+						</div>
+					</li>
+
+				</ul>
+
+				<div class="gform_footer top_label">
+					<button type="submit" class="gform_button button btn btn--primary">Submit</button>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

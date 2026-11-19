@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" href="/main.css"/>
+	<link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+	<title>Add Project Action</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+		<div class="page-content page-content--form">
+			<div class="hero page-hero hero-small hero-has-back">
+				<div class="container">
+					<a href="#" class="btn btn--secondary" onclick="history.back(); return false;">←</a>
+					<h1 class="page-title">Add Project Action</h1>
+				</div>
+			</div>
+			<div class="container container--small contact-us clearfix">
+			<div class="page-content page-content--form">
+			<div class="g_browser_chrome gform_wrapper gform_legacy_markup_wapper gform-theme--no-framework">
+				<form th:action="@{/projects/{id}/add-action(id=${project.id})}"
+					  th:object="${actionForm}" method="post">
+					<div class="gform-body gform_body">
+						<ul id="gform_fields_2" class="gform_fields top_label form_sublabel_below description_below">
+							<li id="field_2_1"
+								class="gfield gfield--type-text gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_1"><label class="gfield_label gform-field-label" for="action-description">Action Description:<span
+									class="gfield_required"><span
+									class="gfield_required gfield_required_asterisk">*</span></span></label>
+								<div class="ginput_container ginput_container_text"><input id="action-description" th:field="*{actionDescription}"
+																						   class="large"
+																						   aria-required="true"
+																						   aria-invalid="false"></div>
+								<div th:if="${#fields.hasErrors('actionDescription')}" th:errors="*{actionDescription}" class="gfield_error"></div>
+							</li>
+							<li id="field_2_10"
+								class="gfield gfield--type-select gfield--width-full field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_10">
+								<label class="gfield_label gform-field-label" for="owner">
+									Assigned To:
+								</label>
+								<div class="ginput_container ginput_container_select">
+									<select id="owner" th:field="*{ownerId}" class="large new-application-select">
+										<option value="">-- Select Assignee --</option>
+										<option th:each="o : ${owners}"
+												th:value="${o.id}"
+												th:text="${o.ownerName}"></option>
+									</select>
+								</div>
+							</li>
+							<li id="field_2_3"
+								class="gfield gfield--type-email gfield--width-full gfield_contains_required field_sublabel_below gfield--no-description field_description_below gfield_visibility_visible"
+								data-js-reload="field_2_2"><label class="gfield_label gform-field-label" for="due-date">Action Completion Date:</label>
+								<div class="ginput_container ginput_container_email">
+									<input id="due-date" type="date" th:field="*{dueDate}" class="large" aria-required="true"
+										   aria-invalid="false">
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="gform_footer top_label">
+						<button type="submit" class="gform_button button btn btn--primary">Add Action</button>
+					</div>
+				</form>
+			</div>
+		</div>
+			</div>
+	</div>
+</div>
+
+</body>
+</html>

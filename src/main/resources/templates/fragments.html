@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/main.css" />
+</head>
+
+<body>
+<div class="global-header is-active" th:fragment = "navbar">
+    <div class="container">
+        <a class="logo" href="/"><img src="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/logo.png" alt="Reece Foundation"></a>
+        <ul class="global-nav header-nav">
+            <li class="has-drop menu-item-has-children"><a href="/projects">Projects</a>
+                <div class="dropdown-wrapper">
+                    <ul class="dropdown">
+                        <li><a href="/projects">Projects</a></li>
+                        <li><a href="/projects/search">Project Search</a></li>
+                        <li><a href="/projects/applications">Application Manager</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class=""><a href="/organisations">Organisations</a></li>
+            <li class=""><a href="/upcoming-payments">Payments</a></li>
+            <li class=""><a href="/profile">Profile</a></li>
+            <li>
+                <form th:action="@{/logout}" method="post" id="logoutForm" style="display:inline;">
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+    <script>
+        // Start page content below the fixed header, and shrink banner titles
+        // that are too long to fit on one line
+        (function () {
+            const MIN_SIZE = 14;
+            function setHeaderHeight() {
+                const header = document.querySelector('.global-header');
+                if (header) {
+                    document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+                }
+            }
+            function fitBannerTitles() {
+                document.querySelectorAll('.hero-small .page-title').forEach(title => {
+                    title.style.fontSize = '';
+                    title.classList.remove('page-title--wrap');
+                    let size = parseFloat(getComputedStyle(title).fontSize);
+                    while (title.scrollWidth > title.clientWidth && size > MIN_SIZE) {
+                        size -= 1;
+                        title.style.fontSize = size + 'px';
+                    }
+                    if (title.scrollWidth > title.clientWidth) {
+                        title.classList.add('page-title--wrap');
+                    }
+                });
+            }
+            function layout() {
+                setHeaderHeight();
+                fitBannerTitles();
+            }
+            document.addEventListener('DOMContentLoaded', layout);
+            window.addEventListener('load', setHeaderHeight);
+            window.addEventListener('resize', layout);
+        })();
+    </script>
+</div>
+
+<!-- Classification tick boxes; sub classifications show beneath a classification once it is ticked.
+     Must be included inside a form bound to a ProjectForm. -->
+<div th:fragment="classificationPicker" class="category-picker">
+    <div class="category-picker__group" th:each="c : ${classifications}">
+        <label class="category-picker__option">
+            <input type="checkbox" th:field="*{classificationIds}" th:value="${c.id}" data-classification-checkbox />
+            <span th:text="${c.classificationName}"></span>
+        </label>
+        <div class="category-picker__subs" th:unless="${#lists.isEmpty(c.subClassifications)}">
+            <label class="category-picker__option" th:each="sub : ${c.subClassifications}">
+                <input type="checkbox" th:field="*{subClassificationIds}" th:value="${sub.id}" />
+                <span th:text="${sub.subClassificationName}"></span>
+            </label>
+        </div>
+    </div>
+</div>
+</body>
+</html>

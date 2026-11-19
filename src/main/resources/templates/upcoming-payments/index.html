@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+    <title>Payments</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+<div class="page-content page-content--form">
+    <div class="hero page-hero hero-small">
+        <div class="container">
+            <h1 class="page-title">Payments</h1>
+        </div>
+    </div>
+    <div class="gf_browser_chrome gform_wrapper gform_legacy_markup_wrapper gform-theme--no-framework" data-form-theme="legacy" data-form-index="0" id="gform_wrapper_2">
+
+        <form method="get" action="/upcoming-payments" style="display:flex; align-items:center; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+            <select name="month" style="padding:6px 10px; border-radius:4px; border:1px solid #ccc;">
+                <option value="">All months</option>
+                <option th:each="m : ${months}"
+                        th:value="${m.value}"
+                        th:text="${m.getDisplayName(T(java.time.format.TextStyle).FULL, T(java.util.Locale).ENGLISH)}"
+                        th:selected="${selectedMonth != null and selectedMonth == m.value}">
+                </option>
+            </select>
+            <input type="number" name="year" placeholder="Year e.g. 2025"
+                   th:value="${selectedYear != null ? selectedYear : currentYear}"
+                   min="2000" max="2100"
+                   style="padding:6px 10px; border-radius:4px; border:1px solid #ccc; width:130px;" />
+            <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                <input type="checkbox" name="unpaidOnly" value="true" th:checked="${unpaidOnly}" />
+                Unpaid only
+            </label>
+            <button type="submit" class="btn btn--primary small">Filter</button>
+            <a th:href="@{/upcoming-payments}" class="btn btn--secondary small">Clear</a>
+            <a th:href="@{/upcoming-payments/upload}"
+               class="btn btn--secondary small" style="margin-left:auto;">Upload Payments</a>
+            <a th:href="@{/upcoming-payments/export(month=${selectedMonth}, year=${selectedYear}, unpaidOnly=${unpaidOnly})}"
+               class="btn btn--secondary small">Export to Excel</a>
+        </form>
+
+        <table class="results-table">
+            <thead>
+            <tr>
+                <th>Project Number</th>
+                <th>Project Name</th>
+                <th>Organisation</th>
+                <th>Payment Amount</th>
+                <th>Payment Due Date</th>
+                <th>Invoice Received</th>
+                <th>Paid</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="payment, iter : ${payments}"
+                th:data-href="@{/projects/{projectId}/payment/{paymentId}(projectId=${payment.project.id}, paymentId=${payment.id})}"
+                onclick="if (!event.target.closest('a, button, form, input, label')) window.location=this.dataset.href"
+                style="cursor:pointer;">
+                <td th:text="${payment.project.id}"></td>
+                <td th:text="${payment.project.projectName}"></td>
+                <td th:text="${payment.project.organisation.organisationName}"></td>
+                <td th:text="${'£' + #numbers.formatDecimal(payment.paymentAmount, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="${payment.paymentDueDate != null ? #dates.format(payment.paymentDueDate, 'dd/MM/yyyy') : '-'}"></td>
+                <td>
+                    <input type="checkbox"
+                           th:checked="${payment.invoiced}"
+                           th:id="'invoiced-' + ${iter.index}"
+                           th:name="'invoiced-' + ${iter.index}"
+                           disabled />
+                </td>
+                <td>
+                    <input type="checkbox"
+                           th:checked="${payment.paid}"
+                           th:id="'paid-' + ${iter.index}"
+                           th:name="'paid-' + ${iter.index}"
+                           disabled />
+                </td>
+                <td>
+                    <form th:action="@{/projects/{projectId}/payment/{paymentId}/delete(
+                projectId=${payment.project.id}, paymentId=${payment.id})}"
+                          method="post"
+                          onclick="event.stopPropagation()"
+                          onsubmit="return confirm('Are you sure you want to delete this payment?');">
+                        <button type="submit" class="btn btn--danger small" name="redirect" value="/upcoming-payments">🗑️</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</body>
+</html>

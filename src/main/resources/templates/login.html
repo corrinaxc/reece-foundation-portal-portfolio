@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" th:href="@{/main.css}" />
+	<link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+	<title>Login</title>
+</head>
+<body>
+<div class="row">
+	<div class="page-content page-content--form">
+		<div class="hero page-hero hero-small">
+			<div class="container">
+				<h1 class="page-title">Login</h1>
+			</div>
+		</div>
+		<div class="g_browser_chrome gform_wrapper gform_legacy_markup_wapper gform-theme--no-framework">
+			<form th:action="@{/login}" method="post">
+				<div class="gform-body gform_body">
+					<label class="gfield_label gform-field-label">Email</label>
+					<input type="text" name="username" required>
+				</div>
+				<div>
+					<label class="gfield_label gform-field-label">Password</label>
+					<input type="password" name="password" required>
+				</div>
+
+				<div th:if="${param.error}" class="error">
+					Invalid email or password
+				</div>
+
+				<div th:if="${param.logout}" class="success">
+					You have been logged out successfully.
+				</div>
+
+				<button class="gform_button button btn btn--primary" type="submit">Login</button>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+
+</body>
+</html>

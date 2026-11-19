@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/main.css"/>
+    <link rel="icon" href="https://www.reece-foundation.org/wp-content/themes/reecefoundation/img/favicon.png" type="image/x-icon">
+    <title>Payments Imported</title>
+</head>
+<body>
+<div th:replace="fragments :: navbar"></div>
+<div class="row">
+<div class="page-content page-content--form">
+    <div class="hero page-hero hero-small">
+        <div class="container">
+            <h1 class="page-title">Payments Imported</h1>
+        </div>
+    </div>
+
+    <p><strong th:text="${imported}"></strong> payment(s) were imported successfully.</p>
+
+    <a th:href="@{/upcoming-payments}" class="btn btn--primary">Back to Upcoming Payments</a>
+    <a th:href="@{/upcoming-payments/upload}" class="btn btn--secondary">Import More</a>
+</div>
+</div>
+</body>
+</html>
